@@ -41,8 +41,7 @@ personajes = {
 (5,1): "Beatriz",
 (2,3): "Carolina",
 (3,5): "Dante",
-(6,6): "Elisabeth",
-(4,4): "Vicente"
+(6,6): "Elisabeth"
 }
 
 @app.route("/game")
@@ -63,8 +62,8 @@ def tablero():
                 if contenido != "":
                     contenido += " - "
                     contenido += personajes[(fila, columna)]
-
-                casillas.append({
+            #añadimos todas las casillas al tablero
+            casillas.append({
                     "fila": fila,
                     "columna": columna,
                     "contenido": contenido                 
@@ -79,3 +78,6 @@ def tablero():
         return jsonify({
              "casillas": casillas,
              "history": history})
+    
+if __name__ == "__main__":
+ app.run(debug=True)
