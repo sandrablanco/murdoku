@@ -29,4 +29,5 @@ fetch("/tablero")
         div.classList.add("comedor");
     }
     tablero.appendChild(div);
-}
+});
+});

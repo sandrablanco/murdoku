@@ -17,7 +17,10 @@ Dante estaba sobre la cama.
 Elisabeth estaba junto a la planta.
 Y Vicente era la victima estaba en la última casiilla libre. Ayuda al detective a esclarecer los hechos porque un sospechoso lo noqueó y no se acuerda de nada. ¡Espero que tengas más suerte!
 (recuerda que los personajes no pueden estar en la casilla de una mesa o planta, pero si en una alfombra o en una cama).
-objetos del tablero = {
+"""
+
+#objetos del tablero 
+elementos = {
 #sala
 (1,2): "ventana",
 #dormitorio
@@ -42,6 +45,23 @@ personajes = {
 (4,4) "Vicente"
 }
 
-@app.route('/game')
+@app.route("/game")
 def game():
-return render_template('game.html', history=history, objetos=objetos, personajes=personajes)
+    return render_template('game.html', history=history, elementos=elementos, personajes=personajes)
+
+@app.route("/tablero")
+def tablero():
+    casillas = []
+    for fila in range(1, 7):
+        for columna in range(1, 7):
+            if (fila, columna) in elementos:
+                casillas.append((fila, columna, elementos[(fila, columna)]))
+            elif (fila, columna) in personajes:
+                casillas.append((fila, columna, personajes[(fila, columna)]))
+
+                casillas.append({
+                    "fila": fila,
+                    "columna": columna,
+                    "contenido": personajes[(fila, columna)]
+                    "elementos"
+                })
