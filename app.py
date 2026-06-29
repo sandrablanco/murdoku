@@ -44,6 +44,8 @@ personajes = {
 (6,6): "Elisabeth"
 }
 
+victima = "Vicente"
+
 @app.route("/game")
 def game():
     return render_template('game.html', history=history, elementos=elementos, personajes=personajes)
@@ -72,7 +74,7 @@ def tablero():
         #última casilla libre para la víctima
         for casilla in reversed(casillas):
             if casilla["contenido"] == "":
-                casilla["contenido"] = "Vicente"
+                casilla["contenido"] = victima
                 break
 
         return jsonify({
