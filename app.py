@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, jsonify, render_template
 app = Flask(__name__)
 
 @app.route('/')
@@ -42,7 +42,7 @@ personajes = {
 (2,3): "Carolina",
 (3,5): "Dante",
 (6,6): "Elisabeth",
-(4,4) "Vicente"
+(4,4): "Vicente"
 }
 
 @app.route("/game")
@@ -54,14 +54,28 @@ def tablero():
     casillas = []
     for fila in range(1, 7):
         for columna in range(1, 7):
+            contenido = ""
+            #si hay algún elemento en alguna casilla
             if (fila, columna) in elementos:
-                casillas.append((fila, columna, elementos[(fila, columna)]))
-            elif (fila, columna) in personajes:
-                casillas.append((fila, columna, personajes[(fila, columna)]))
+                contenido = elementos[(fila, columna)]
+            #si hay personajes en alguna casilla
+            if (fila, columna) in personajes:
+                if contenido != "":
+                    contenido += " - "
+                    contenido += personajes[(fila, columna)]
 
                 casillas.append({
                     "fila": fila,
                     "columna": columna,
-                    "contenido": personajes[(fila, columna)]
-                    "elementos"
+                    "contenido": contenido                 
                 })
+           
+        #última casilla libre para la víctima
+        for casilla in reversed(casillas):
+            if casilla["contenido"] == "":
+                casilla["contenido"] = "Vicente"
+                break
+
+        return jsonify({
+             "casillas": casillas,
+             "history": history})
