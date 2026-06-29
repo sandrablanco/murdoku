@@ -7,7 +7,10 @@ body {
 #tablero {
 
 width:600px;
+
 height:600px;
+
+margin:auto;
 
 display:grid;
 
@@ -15,14 +18,18 @@ grid-template-columns:repeat(6,1fr);
 
 grid-template-rows: repeat(6, 1fr);
 
-margin:auto;
+
 
 }
 
 
 .casilla {
 
-border:1px solid black;
+border:2px solid black;
+
+background-color: #693c3c;
+
+height: 80px;
 
 display:flex;
 
@@ -32,4 +39,20 @@ justify-content:center;
 
 font-size:12px;
 
+}
+
+.sala {
+    background-color: #dab363;
+}
+
+.dormitorio {
+    background-color: #bf4f6b;
+}
+
+.salon {
+    background-color: #bf5731;
+}
+
+.comedor {
+    background-color: #4887c2;
 }

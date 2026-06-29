@@ -46,9 +46,9 @@ personajes = {
 
 victima = "Vicente"
 
-@app.route("/game")
+@app.route("/")
 def game():
-    return render_template('game.html', history=history, elementos=elementos, personajes=personajes)
+    return render_template("index.html")
 
 @app.route("/tablero")
 def tablero():

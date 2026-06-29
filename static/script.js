@@ -2,8 +2,7 @@ fetch("/tablero")
   .then(response => response.json())
   .then(data => {
     // Procesar los datos del tablero
-  });
-  document.getElementById("history").innerHTML = "Bienvenido a tu primer caso de murdoku. Resuelve el misterio completando el tablero."=data.history;
+  document.getElementById("history").innerHTML = "Bienvenido a tu primer caso de murdoku. Resuelve el misterio completando el tablero." + data.history;
   let tablero=document.getElementById("tablero");
   
   for (let i = 0; i < data.casillas.length; i++) {
@@ -29,5 +28,6 @@ fetch("/tablero")
         div.classList.add("comedor");
     }
     tablero.appendChild(div);
+}
 });
-});
+
