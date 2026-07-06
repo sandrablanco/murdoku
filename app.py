@@ -46,6 +46,7 @@ personajes = {
 }
 
 victima = "Vicente"
+tamaño_tablero = (6, 6)
 
 @app.route("/")
 def game():
