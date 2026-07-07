@@ -54,43 +54,72 @@ def game():
 
 @app.route("/tablero")
 def tablero():
-    # board = np.full((tamaño_tablero, tamaño_tablero), "", dtype=object)
-    # for (fila, columna), contenido in elementos.items():
-    #     board[fila-1, columna-1] = contenido
-    # for (fila, columna), nombre in personajes.items():
-    #     i, j = fila-1, columna-1
-    #     if board[i, j] != "":
-    #      board[i, j] = board[i, j] + " - " + nombre.personajes[(fila, columna)]
-    #     else:
-    #      board[i, j] = nombre.personajes[(fila, columna)]
-    casillas = []
-    for fila in range(1, 7):
-        for columna in range(1, 7):
-            contenido = ""
-            #si hay algún elemento en alguna casilla
-            if (fila, columna) in elementos:
-                contenido = elementos[(fila, columna)]
-            #si hay personajes en alguna casilla
-            if (fila, columna) in personajes:
-                if contenido != "":
-                    contenido += " - "
-                    contenido += personajes[(fila, columna)]
-            #añadimos todas las casillas al tablero
-            casillas.append({
-                    "fila": fila,
-                    "columna": columna,
-                    "contenido": contenido                 
-                })
-           
-        #última casilla libre para la víctima
-        for casilla in reversed(casillas):
-            if casilla["contenido"] == "":
-                casilla["contenido"] = victima
-                break
+ from flask import Flask, jsonify, render_template
+import numpy as np
 
-        return jsonify({
-             "casillas": casillas,
-             "history": history})
-    
+app = Flask(__name__)
+
+history = """...""" # (tu texto igual)
+
+elementos = {
+    (1, 2): "ventana",
+    (2, 5): "cama",
+    (3, 5): "cama",
+    (1, 5): "ventana",
+    (4, 1): "mesa",
+    (6, 1): "mesa",
+    (5, 3): "planta",
+    (4, 6): "mesa",
+    (5, 6): "planta",
+}
+
+personajes = {
+    (1, 2): "Alejandro",
+    (5, 1): "Beatriz",
+    (2, 3): "Carolina",
+    (3, 5): "Dante",
+    (6, 6): "Elisabeth",
+}
+
+victima = "Vicente"
+TamañoTablero = 6
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route("/tablero")
+def tablero():
+    # matriz de strings vacíos, indexada 0..5
+    board = np.full((TamañoTablero, TamañoTablero), "", dtype=object)
+
+    # colocar elementos (restando 1 porque tus coords empiezan en 1)
+    for (fila, columna), nombre in elementos.items():
+        board[fila - 1, columna - 1] = nombre
+
+    # colocar personajes (concatenando si ya hay algo)
+    for (fila, columna), nombre in personajes.items():
+        i, j = fila - 1, columna - 1
+        if board[i, j]:
+            board[i, j] += " - " + nombre
+        else:
+            board[i, j] = nombre
+
+    # buscar la última casilla vacía para la víctima (vectorizado)
+    filas_vacias, columnas_vacias = np.where(board == "")
+    if len(filas_vacias) > 0:
+        i, j = filas_vacias[-1], columnas_vacias[-1]
+        board[i, j] = victima
+
+    # construir la lista de casillas para el JSON
+    casillas = [
+        {"fila": i + 1, "columna": j + 1, "contenido": board[i, j]}
+        for i in range(TamañoTablero)
+        for j in range(TamañoTablero)
+    ]
+
+    return jsonify({"casillas": casillas, "history": history})
+
 if __name__ == "__main__":
- app.run(debug=True)
+    app.run(debug=True)
+   
