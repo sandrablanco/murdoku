@@ -46,7 +46,7 @@ personajes = {
 }
 
 victima = "Vicente"
-tamaño_tablero = (6, 6)
+tamaño_tablero = 6
 
 @app.route("/")
 def game():
@@ -54,6 +54,15 @@ def game():
 
 @app.route("/tablero")
 def tablero():
+    # board = np.full((tamaño_tablero, tamaño_tablero), "", dtype=object)
+    # for (fila, columna), contenido in elementos.items():
+    #     board[fila-1, columna-1] = contenido
+    # for (fila, columna), nombre in personajes.items():
+    #     i, j = fila-1, columna-1
+    #     if board[i, j] != "":
+    #      board[i, j] = board[i, j] + " - " + nombre.personajes[(fila, columna)]
+    #     else:
+    #      board[i, j] = nombre.personajes[(fila, columna)]
     casillas = []
     for fila in range(1, 7):
         for columna in range(1, 7):
