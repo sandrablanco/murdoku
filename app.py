@@ -45,7 +45,8 @@ personajes = {
 (6,6): "Elisabeth": "👩🏽"
 }
 
-victima = "Vicente": "💀"
+victima = "Vicente"
+emoji_victima = "💀"
 tamaño_tablero = 6
 
 @app.route("/")
