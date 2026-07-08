@@ -72,24 +72,18 @@ def tablero():
         emoji = emoji_elementos.get(nombre, "")
         board[fila - 1, columna - 1] = f"{emoji} {nombre}"
 
-    # colocar personajes con su emoji (concatenando si ya hay algo)
+    #calculo de la posicion de la victima pero sin pintar en el frontend
+    board_solution = board.copy()
     for (fila, columna), nombre in personajes.items():
         i, j = fila - 1, columna - 1
-        emoji = emoji_personajes.get(nombre, "")
-        texto = f"{emoji} {nombre}"
-        if board[i, j]:
-            board[i, j] += " - " + texto
-        else:
-            board[i, j] = texto
-
-    # buscar la última casilla vacía para la víctima
-    filas_vacias, columnas_vacias = np.where(board == "")
+        board_solution[i, j] == "":
+        board_solution[i, j] = nombre
+    filas_vacias, columnas_vacias = np.where(board_solution == "")
     if len(filas_vacias) > 0:
-        i, j = filas_vacias[-1], columnas_vacias[-1]
-        board[i, j] = f"{emoji_victima} {victima}"
+        victima_fila, victima_columna = filas_vacias[-1], columnas_vacias[-1]
+        board[victima_fila, victima_columna] = f"{emoji_victima} {victima}"
 
-    # construir la lista de casillas para el JSON
-    casillas = [
+        casillas = [
         {"fila": i + 1, "columna": j + 1, "contenido": board[i, j]}
         for i in range(TamañoTablero)
         for j in range(TamañoTablero)
@@ -97,6 +91,38 @@ def tablero():
 
     return jsonify({"casillas": casillas, "history": history})
 
+    # colocar personajes con su emoji (concatenando si ya hay algo)
+    # for (fila, columna), nombre in personajes.items():
+    #     i, j = fila - 1, columna - 1
+    #     emoji = emoji_personajes.get(nombre, "")
+    #     texto = f"{emoji} {nombre}"
+    #     if board[i, j]:
+    #         board[i, j] += " - " + texto
+    #     else:
+    #         board[i, j] = texto
+
+    # # buscar la última casilla vacía para la víctima
+    # filas_vacias, columnas_vacias = np.where(board == "")
+    # if len(filas_vacias) > 0:
+    #     i, j = filas_vacias[-1], columnas_vacias[-1]
+    #     board[i, j] = f"{emoji_victima} {victima}"
+
+    # # construir la lista de casillas para el JSON
+    # casillas = [
+    #     {"fila": i + 1, "columna": j + 1, "contenido": board[i, j]}
+    #     for i in range(TamañoTablero)
+    #     for j in range(TamañoTablero)
+    # ]
+
+    # return jsonify({"casillas": casillas, "history": history})
+
+@app.route("/jugada", methods=["POST"])
+def jugada():
+    from flask import request
+    data = request.get_json()
+    personaje = data.get("personaje")
+    fila = data.get("fila") 
+    columna = data.get("columna")
 
 if __name__ == "__main__":
     app.run(debug=True)
