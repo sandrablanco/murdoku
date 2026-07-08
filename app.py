@@ -100,19 +100,21 @@ def tablero():
     for (fila, columna), nombre in elementos.items():
         board[fila - 1, columna - 1] = nombre
 
-    # colocar personajes (concatenando si ya hay algo)
+    # colocar personajes con su emoji (concatenando si ya hay algo)
     for (fila, columna), nombre in personajes.items():
         i, j = fila - 1, columna - 1
+        emoji = emoji_personajes.get(nombre, "")
+        texto = f"{emoji} {nombre}"
         if board[i, j]:
-            board[i, j] += " - " + nombre
+            board[i, j] += " - " + texto
         else:
-            board[i, j] = nombre
+            board[i, j] = texto
 
     # buscar la última casilla vacía para la víctima (vectorizado)
     filas_vacias, columnas_vacias = np.where(board == "")
     if len(filas_vacias) > 0:
         i, j = filas_vacias[-1], columnas_vacias[-1]
-        board[i, j] = victima
+        board[i, j] = f"{emoji_victima} {victima}"
 
     # construir la lista de casillas para el JSON
     casillas = [
