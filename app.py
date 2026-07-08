@@ -123,6 +123,13 @@ def jugada():
     personaje = data.get("personaje")
     fila = data.get("fila") 
     columna = data.get("columna")
+    #validación de la jugada(errores)
+    if personaje is None or fila is None or columna is None:
+        return jsonify({"error": "Faltan datos de la jugada"}), 400
+    if personaje not in personajes.values():
+        return jsonify({"error": "Personaje no válido"}), 400
+    if not (1 <= fila <= TamañoTablero) or not (1 <= columna <= TamañoTablero):
+        return jsonify({"error": "Coordenadas fuera del tablero"}), 400
 
 if __name__ == "__main__":
     app.run(debug=True)
