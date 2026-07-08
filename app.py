@@ -23,29 +23,29 @@ Y Vicente era la victima estaba en la última casiilla libre. Ayuda al detective
 #objetos del tablero 
 elementos = {
 #sala
-(1,2): "ventana",
+(1,2): "ventana": "🪟",
 #dormitorio
-(2,5): "cama",
-(3,5): "cama",
-(1,5): "ventana",
+(2,5): "cama": "🛏️",
+(3,5): "cama": "🛏️",
+(1,5): "ventana": "🪟",
 #salón
-(4,1): "mesa",
-(6,1): "mesa",
-(5,3): "planta",
+(4,1): "mesa": "🍴",
+(6,1): "mesa": "🍴",
+(5,3): "planta": "🌱",
 #comedor
-(4,6):"mesa",
-(5,6):"planta",
+(4,6):"mesa": "🍴",
+(5,6):"planta": "🌱",
 }
 
 personajes = {
-(1,2): "Alejandro",
-(5,1): "Beatriz",
-(2,3): "Carolina",
-(3,5): "Dante",
-(6,6): "Elisabeth"
+(1,2): "Alejandro": "👨🏻",
+(5,1): "Beatriz": "👩🏻",
+(2,3): "Carolina": "👩🏼",
+(3,5): "Dante": "👨🏼",
+(6,6): "Elisabeth": "👩🏽"
 }
 
-victima = "Vicente"
+victima = "Vicente": "👨🏻‍🦰"
 tamaño_tablero = 6
 
 @app.route("/")
