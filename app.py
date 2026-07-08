@@ -45,7 +45,7 @@ personajes = {
 (6,6): "Elisabeth": "👩🏽"
 }
 
-victima = "Vicente": "👨🏻‍🦰"
+victima = "Vicente": "💀"
 tamaño_tablero = 6
 
 @app.route("/")
@@ -92,8 +92,11 @@ def index():
 def tablero():
     # matriz de strings vacíos, indexada 0..5
     board = np.full((TamañoTablero, TamañoTablero), "", dtype=object)
-
-    # colocar elementos (restando 1 porque tus coords empiezan en 1)
+    #coloca emojis con los elementos
+    for (fila, columna), nombre in elementos.items():
+        emoji = emoji_elementos.get(nombre, "")
+        board[fila - 1, columna - 1] = f"{emoji} {nombre}"
+    # colocar elementos (restando 1 porque coordenadas empiezan en 1)
     for (fila, columna), nombre in elementos.items():
         board[fila - 1, columna - 1] = nombre
 
