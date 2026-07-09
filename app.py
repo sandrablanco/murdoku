@@ -76,8 +76,8 @@ def tablero():
     board_solution = board.copy()
     for (fila, columna), nombre in personajes.items():
         i, j = fila - 1, columna - 1
-        board_solution[i, j] == "":
-        board_solution[i, j] = nombre
+        if board_solution[i, j] == "":
+         board_solution[i, j] = nombre
     filas_vacias, columnas_vacias = np.where(board_solution == "")
     if len(filas_vacias) > 0:
         victima_fila, victima_columna = filas_vacias[-1], columnas_vacias[-1]
@@ -130,6 +130,20 @@ def jugada():
         return jsonify({"error": "Personaje no válido"}), 400
     if not (1 <= fila <= TamañoTablero) or not (1 <= columna <= TamañoTablero):
         return jsonify({"error": "Coordenadas fuera del tablero"}), 400
+    #comparación con la solución real
+    posicion_real = personajes.get((fila, columna))
+    if posicion_real == personaje:
+        return jsonify({
+            "resultado": "correcto", 
+            "mensaje": f"{personaje} está en la posición correcta.",
+            "contenido": f"{emoji_personajes[personaje]} {personaje}"
+            })
+    else: 
+        return jsonify({
+            "resultado": "incorrecto", 
+            "mensaje": f"{personaje} no está en la posición ({fila}, {columna}).",
+            "contenido": f"{emoji_personajes[personaje]} {personaje}"
+            })
 
 if __name__ == "__main__":
     app.run(debug=True)
