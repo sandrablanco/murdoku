@@ -14,6 +14,7 @@ fetch("/tablero")
     div.dataset.fila = c.fila;
     div.dataset.columna = c.columna;
     div.dataset.contenido = c.contenido;
+    div.dataset.tipo = c.tipo;
     let texto =
         "F: " + c.fila +
         " C: " + c.columna +
@@ -34,5 +35,9 @@ fetch("/tablero")
     }
     tablero.appendChild(div);
 }
-});
 
+if (c.tipo !== "mesa" && c.tipo !== "planta" && c.tipo !== "victima") {
+    div.addEventListener("click", () => intentarColocar(div));
+}
+tablero.appendChild(div);
+});

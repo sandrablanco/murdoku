@@ -66,11 +66,14 @@ def index():
 def tablero():
     # matriz de strings vacíos, indexada 0..5
     board = np.full((TamañoTablero, TamañoTablero), "", dtype=object)
+    tipos = np.full((TamañoTablero, TamañoTablero), "vacio", dtype=object)
 
     # colocar elementos con su emoji
     for (fila, columna), nombre in elementos.items():
+        i, j = fila - 1, columna - 1
         emoji = emoji_elementos.get(nombre, "")
-        board[fila - 1, columna - 1] = f"{emoji} {nombre}"
+        board[i, j] = f"{emoji} {nombre}"
+        tipos[i, j] = nombre #cama, mesa, planta, ventana
 
     #calculo de la posicion de la victima pero sin pintar en el frontend
     board_solution = board.copy()
@@ -80,11 +83,12 @@ def tablero():
          board_solution[i, j] = nombre
     filas_vacias, columnas_vacias = np.where(board_solution == "")
     if len(filas_vacias) > 0:
-        victima_fila, victima_columna = filas_vacias[-1], columnas_vacias[-1]
-        board[victima_fila, victima_columna] = f"{emoji_victima} {victima}"
+        vi, vj = filas_vacias[-1], columnas_vacias[-1]
+        board[vi, vj] = f"{emoji_victima} {victima}"
+        tipos[vi, vj] = "victima"
 
         casillas = [
-        {"fila": i + 1, "columna": j + 1, "contenido": board[i, j]}
+        {"fila": i + 1, "columna": j + 1, "contenido": board[i, j], "tipo": tipos[i, j]}
         for i in range(TamañoTablero)
         for j in range(TamañoTablero)
     ]
@@ -105,6 +109,11 @@ def jugada():
         return jsonify({"error": "Personaje no válido"}), 400
     if not (1 <= fila <= TamañoTablero) or not (1 <= columna <= TamañoTablero):
         return jsonify({"error": "Coordenadas fuera del tablero"}), 400
+    #ningun personaje se coloca en planta o mesa
+    tipo_casilla = elementos.get((fila, columna))
+    if tipo_casilla in ["mesa", "planta"]:
+        return jsonify({"error": f"No se puede colocar {personaje} en una {tipo_casilla}"}), 400
+    
     #comparación con la solución real
     posicion_real = personajes.get((fila, columna))
     if posicion_real == personaje:
