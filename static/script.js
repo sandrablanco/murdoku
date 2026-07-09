@@ -1,3 +1,5 @@
+let personajesColocados = [];
+
 fetch("/tablero")
   .then(response => response.json())
   .then(data => {
@@ -9,6 +11,9 @@ fetch("/tablero")
     let c = data.casillas[i];
     let div = document.createElement("div");
     div.className = "casilla";
+    div.dataset.fila = c.fila;
+    div.dataset.columna = c.columna;
+    div.dataset.contenido = c.contenido;
     let texto =
         "F: " + c.fila +
         " C: " + c.columna +
